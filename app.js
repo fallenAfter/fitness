@@ -4,11 +4,6 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
-var routes = require('./routes/index');
-var users = require('./routes/users');
-
-var app = express();
 //database packages
 var mongoose= require('mongoose');
 
@@ -17,6 +12,13 @@ var passport= require('passport');
 var session= require('express-session');
 var flash= require('connect-flash');
 var localStrategy= require('passport-local').Strategy;
+
+var routes = require('./routes/index');
+var users = require('./routes/users');
+var auth = require('./routes/auth');
+
+var app = express();
+
 
 
 // view engine setup
@@ -31,8 +33,41 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//enable flash for the following message
+app.use(flash());
+//passport config
+app.use(session({
+  secret:'dirty little secret',
+  resave: true,
+  saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+//add the account model
+var Account= require('./models/account');
+passport.use(Account.createStrategy());
+passport.use(new localStrategy(Account.authenticate()));
+
+
+//serialize and deserialize users
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
+
+
 app.use('/', routes);
 app.use('/users', users);
+
+//db connection
+var db= mongoose.connection;
+db.on('error', console.error.bind(console, "db error: "));
+db.once('open', function(callback){
+  console.log('db connected');
+});
+
+var dbConfig= require('./config/db.js');
+mongoose.connect(dbConfig.url);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
