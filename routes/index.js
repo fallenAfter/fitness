@@ -22,6 +22,7 @@ router.get('/workout', isLoggedIn, function(req,res,next){
 function isLoggedIn(req, res, next){
 	if(req.isAuthenticated()){
 		console.log('user is good');
+		next();
 	}
 	else{
 		res.redirect('/auth/login');
