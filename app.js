@@ -37,7 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 //passport config
 app.use(session({
-  secret:'dirty little secret',
+  secret:'secret',
   resave: true,
   saveUninitialized: false
 }));
@@ -58,6 +58,7 @@ passport.deserializeUser(Account.deserializeUser());
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/auth', auth);
 
 //db connection
 var db= mongoose.connection;
