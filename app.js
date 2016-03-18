@@ -9,6 +9,15 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+//database packages
+var mongoose= require('mongoose');
+
+//auth packages
+var passport= require('passport');
+var session= require('passport-session');
+var flash= require('connect-flash');
+var localStrategy= require('local-strategy');
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
