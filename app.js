@@ -14,9 +14,9 @@ var mongoose= require('mongoose');
 
 //auth packages
 var passport= require('passport');
-var session= require('passport-session');
+var session= require('express-session');
 var flash= require('connect-flash');
-var localStrategy= require('local-strategy');
+var localStrategy= require('passport-local').Strategy;
 
 
 // view engine setup
