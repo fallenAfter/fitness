@@ -1,0 +1,13 @@
+<% include ../partials/header.ejs %>
+
+<main>
+	<h3>Add Workout</h3>
+	<form action="/workouts/add" method="post">
+		<fieldset><label for="title">Workout Title</label><input id="title" name="title" type="text"></fieldset>
+		<fieldset><label for="hours">Workout Time</label><input id="hours" name="hours" type="number"></fieldset>
+		<fieldset><label for="date">Workout Date</label><input id="date" name="date" type="date"></fieldset>
+		<input type="Submit" value="submit">
+	</form>
+</main>
+
+<% include ../partials/footer.ejs %>

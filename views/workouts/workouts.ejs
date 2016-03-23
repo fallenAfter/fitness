@@ -1,0 +1,24 @@
+<% include ../partials/header.ejs %>
+
+<main>
+	<table>
+		<thead>
+			<tr>
+				<th>Title</th>
+				<th>Hours</th>
+				<th>Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% for (var counter=0; counter<workout.length; counter++){ %>
+			<tr>
+				<td><%- workout[counter].title %></td>
+				<td><%- workout[counter].hours %></td>
+				<td><%- workout[counter].date %></td>
+			</tr>
+			<% } %>
+		</tbody>
+	</table>
+</main>
+
+<% include ../partials/footer.ejs %>

@@ -18,6 +18,9 @@ passport.deserializeUser(function(id, done){
 
 //get login
 router.get('/login', function(req, res, next){
+	if(req.isAuthenticated()){
+		res.redirect('/welcome');
+	}
 	//store session message
 	var messages=  req.session.message || [];
 	//clear session messages
@@ -32,10 +35,11 @@ router.get('/login', function(req, res, next){
 
 // post login
 router.post('/login', passport.authenticate('local', {
-	successRedirect: '/workout',
-	failureRedirect: '/auth/login',
+	successRedirect: '/welcome',
+	failureRedirect: '/login',
 	failureMessage: 'Login failure'
 }));
+
 //get register
 router.get('/register', function(req,res,next){
 	res.render('auth/register', {
@@ -43,22 +47,29 @@ router.get('/register', function(req,res,next){
 	});
 });
 
+
+
 // post register to save new users
 router.post('/register', function(req,res,next){
 	//use account model to create a new user
 	console.log('attempting user creation');
-	Account.register(new Account({username: req.body.username}), req.body.password, function(err, account){
+	Account.register(new Account({username: req.body.username, nick: req.body.nick}), req.body.password, function(err, account){
 		console.log(err);
-		console.log(req.body.username);
 		if(err){
 			return res.render('auth/register', {title: 'Register'});
 			console.log('error in registration');
 		}
 		else{
 			console.log('account made');
-			res.redirect('/');
+			res.redirect('/login');
 		}
 	});
+});
+
+// logout function
+router.get('/logout', function (req, res, next){
+	req.session.destroy();
+	res.redirect('/login');
 });
 
 

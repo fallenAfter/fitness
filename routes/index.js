@@ -6,26 +6,28 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-//get login
-router.get('/login', function(req, res, next){
-	res.render('./auth/login', {
-		title: 'login'
-	});
-});
+
 router.get('/workout', isLoggedIn, function(req,res,next){
 	res.render('workout', {
 		title:'Workout'
 	});
 });
 
+router.get('/welcome', isLoggedIn, function (req,res,next){
+	res.render('./auth/welcome', {
+		title: 'Welcome',
+		user: req.user
+	});
+})
+
 // check if user is logged index
 function isLoggedIn(req, res, next){
 	if(req.isAuthenticated()){
 		console.log('user is good');
-		next();
+		return next();
 	}
 	else{
-		res.redirect('/auth/login');
+		res.redirect('/login');
 	}
 }
 

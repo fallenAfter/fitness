@@ -16,6 +16,7 @@ var localStrategy= require('passport-local').Strategy;
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var auth = require('./routes/auth');
+var workouts= require('./routes/workouts');
 
 var app = express();
 
@@ -37,7 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 //passport config
 app.use(session({
-  secret:'secret',
+  secret: 'secret',
   resave: true,
   saveUninitialized: false
 }));
@@ -56,9 +57,10 @@ passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
 
-app.use('/', routes);
+app.use('/', routes, auth);
 app.use('/users', users);
-app.use('/auth', auth);
+app.use('/workouts', workouts);
+// app.use('/auth', auth);
 
 //db connection
 var db= mongoose.connection;
